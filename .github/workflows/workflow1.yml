@@ -6,13 +6,10 @@ jobs:
     steps:
       - name: checkout Git repository
         uses: actions/checkout@v7
-      - name: Run linters
-        uses: wearerequired/lint-action@v3
-      - name: Run custom lint command
-        run: |
-          echo "Running linters..."
-          npm ci
-          npm run lint
+      - name: Install dependencies
+        run: npm ci
+      - name: Lint
+        run: npm run lint
 
   Test:
     needs: lint
@@ -20,11 +17,10 @@ jobs:
     steps:
       - name: checkout Git Repository
         uses: actions/checkout@v7
+      - name: Install dependencies
+        run: npm ci
       - name: Run tests
-        run: |
-          echo "Running tests..."
-          npm ci
-          npm run test
+        run: npm run test
 
   Deploy:
     needs: Test
@@ -32,8 +28,9 @@ jobs:
     steps:
       - name: checkout Git Repository
         uses: actions/checkout@v7
-      - name: Deploy to Production
-        run: |
-          echo "Deploying to production..."
-          npm ci
-          npm run deploy
+      - name: Install dependencies
+        run: npm ci
+      - name: Run build
+        run: npm run build
+      - name: Deploy to server
+        run: echo "Deploying..."

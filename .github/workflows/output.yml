@@ -1,0 +1,10 @@
+name: Output issues events and github context
+on: issues
+jobs: 
+  output:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output issues events
+        run: |
+          echo "Outputting issues events..."
+          echo "GITHUB_EVENT_NAME: ${{ github.event_name }}"
