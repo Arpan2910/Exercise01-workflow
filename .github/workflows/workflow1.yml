@@ -1,0 +1,39 @@
+name: Lint, Test and Deploy
+on: push
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout Git repository
+        uses: actions/checkout@v7
+      - name: Run linters
+        uses: wearerequired/lint-action@v3
+      - name: Run custom lint command
+        run: |
+          echo "Running linters..."
+          npm ci
+          npm run lint
+
+  Test:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout Git Repository
+        uses: actions/checkout@v7
+      - name: Run tests
+        run: |
+          echo "Running tests..."
+          npm ci
+          npm run test
+
+  Deploy:
+    needs: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout Git Repository
+        uses: actions/checkout@v7
+      - name: Deploy to Production
+        run: |
+          echo "Deploying to production..."
+          npm ci
+          npm run deploy
